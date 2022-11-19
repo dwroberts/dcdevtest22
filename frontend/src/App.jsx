@@ -1,69 +1,42 @@
-import { BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import Dashboard from './pages/Dashboard'
-import Register from './pages/Register'
-import Login from './pages/Login'
-
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+// create user context
+// const UserContext = createContext();
+export const UserContext = React.createContext();
+// export const UserContext = React.createContext();
+import Header from "./components/Header";
+import Dashboard from "./pages/Dashboard";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
 
 function App() {
+  const userState = useState(() => {
+    const userInLocalStorage = localStorage.getItem("user");
+    return userInLocalStorage ? JSON.parse(userInLocalStorage) : {};
+  });
+
+  useEffect(() => {
+    localStorage.setItem("user", JSON.stringify(userState[0]));
+    console.log("Called", userState);
+  }, userState);
+
   return (
     <>
-      <Router>
-        <div className="container">
-          <Routes>
-            <Route path='/' element={<Dashboard />} />
-            <Route path='/register' element={<Register />} />
-            <Route path='/login' element={<Login />} />
-          </Routes>
-        </div>
-      </Router>
+      <UserContext.Provider value={userState}>
+        <Router>
+          <div className="container">
+            <Header />
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/login" element={<Login />} />
+            </Routes>
+          </div>
+        </Router>
+      </UserContext.Provider>
     </>
-  )
+  );
 }
 
-function App_old() {
-  const [count, setCount] = useState(0)
-
-  const [name, setName] = useState("")
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-
-  const registerUser = (e) => {
-    e.preventdefault();
-    console.log("Name", name)
-  }
-
-  return (
-    <div className="App">
-      <h1>Register</h1>
-
-      <form onSubmit={registerUser}>
-        <label>Name</label>
-        <input 
-          value={name} 
-          type="text"
-          onChange={ (e) => setName(e.target.value) }
-        />
-        <label>Email</label>
-        <input 
-          value={email} 
-          type="email"
-          onChange={ (e) => setEmail(e.target.value) }
-        />
-        <label>Password</label>
-        <input 
-          value={password} 
-          type="password"
-          onChange={ (e) => setPassword(e.target.value) }
-        />
-        <button type="submit" className="button">Register</button>
-
-      </form>
-    </div>
-  )
-}
-
-export default App
+export default App;

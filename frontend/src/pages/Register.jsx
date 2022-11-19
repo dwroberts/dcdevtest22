@@ -7,9 +7,21 @@ function Register() {
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
 
-  const registerUser = (e) => {
+  const registerUser = async (e) => {
     e.preventDefault();
-    console.log("Name", name)
+
+    const response = await fetch('http://localhost:5050/api/users', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				name,
+				email,
+				password,
+			}),
+		})
+    
   }
 
   return (

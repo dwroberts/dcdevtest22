@@ -1,12 +1,37 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../App";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const [user, setUser] = useContext(UserContext);
 
-  const loginUser = (e) => {
+  const loginUser = async (e) => {
     e.preventDefault();
-    console.log("Email", email);
+
+    const response = await fetch("http://localhost:5050/api/users/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (data.token) {
+      localStorage.setItem("user", JSON.stringify(data));
+      // Send back to the dashboard
+      setUser(data);
+      navigate("/");
+    } else {
+      alert("Please check your username and password");
+    }
   };
 
   return (
