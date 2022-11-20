@@ -1,13 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;700&display=swap');
+
 :root {
-  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: 16px;
-  line-height: 24px;
+  line-height: 1.5;
   font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -16,8 +13,8 @@
 }
 
 a {
-  font-weight: 500;
-  color: #646cff;
+  font-weight: 400;
+  color: #411bb2;
   text-decoration: inherit;
 }
 a:hover {
@@ -26,10 +23,9 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background: #f5f5f5;
 }
 
 h1 {
@@ -37,24 +33,7 @@ h1 {
   line-height: 1.1;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
+
 
 @media (prefers-color-scheme: light) {
   :root {
@@ -67,4 +46,93 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+
+.container {
+  display: block;
+  width: 100%;
+  padding: 1.5rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 3rem;
+  line-height: 1.1;
+  text-align: center;
+}
+
+
+
+.form-container {
+  padding: 2rem;
+  background: #fff;
+  border-radius: 0.5rem;
+  display: block;
+  margin: 2rem auto;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+}
+
+.form {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.form__footer {
+  display: flex;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.form__footer .btn {
+  margin-right: 1rem;
+}
+
+.form__footer span{
+  margin-right: 0.5rem;
+}
+
+.form__footer span{
+  margin-right: 0.25rem;
+}
+
+.btn {
+  background-color: #333;
+  border-radius: 0.25rem;
+  border: 0 none;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 1rem;
+  line-height: 1.5;
+  outline: none;
+  padding: 9px 24px 8px;
+  position: relative;
+  text-align: center;
+}
+
+.btn:hover,
+.btn:focus {
+  background-color: #111;
+}
+
+label {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"]{
+  background-color: #fff;
+  border-radius: 0.25rem;
+  border: 1px solid #ccc;
+  color: #555;
+  font-size: 1rem;
+  line-height: 1.5;
+  padding: 9px 20px 8px;
+  display: block;
+  margin-bottom: 1rem;
 }

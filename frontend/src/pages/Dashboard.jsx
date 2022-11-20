@@ -1,23 +1,21 @@
-import { useState, useEffect } from "react";
+import { useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../App";
 
 function Dashboard() {
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-  //   if (token) {
-  //     const user = jwt.decode(token);
-  //     if (!user) {
-  //       localStorage.removeItem("token");
-  //       // history.replace("/login");
-  //     } else {
-  //       // populateQuote()
-  //     }
-  //   }
-  // }, []);
+  const navigate = useNavigate();
+  const [user] = useContext(UserContext);
+
+  // redirect to front page if already logged in
+  useEffect(() => {
+    if (!user.token) {
+      navigate("/login");
+    }
+  }, [user]);
 
   return (
     <>
-      <h1>Dashboard</h1>
+      <h1>Hi, {user.name}</h1>
     </>
   );
 }
