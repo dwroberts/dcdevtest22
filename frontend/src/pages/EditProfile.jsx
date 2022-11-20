@@ -2,24 +2,18 @@ import { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../App";
 
-function Register() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [file, setFile] = useState("");
-  const [avatar, setAvatar] = useState("");
-  const navigate = useNavigate();
+function EditProfile() {
   const [user, setUser] = useContext(UserContext);
+  const [name, setName] = useState(user.name);
+  const [email, setEmail] = useState(user.email);
+  const [file, setFile] = useState("");
+  const [avatar, setAvatar] = useState(user.avatar);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (user.token) {
-      navigate("/");
+    if (file) {
+      updateUser();
     }
-  }, [user]);
-
-  useEffect(() => {
-    registerUser();
   }, [avatar]);
 
   const submitHandler = async (e) => {
@@ -27,39 +21,32 @@ function Register() {
     if (file) {
       await createAvatar();
     } else {
-      registerUser();
+      updateUser();
     }
   };
 
-  const registerUser = async () => {
-    console.log({
-      name,
-      email,
-      password,
-      avatar,
-    });
-
-    const response = await fetch("http://localhost:5050/api/users", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name,
-        email,
-        password,
-        avatar,
-      }),
-    });
+  const updateUser = async (e) => {
+    const response = await fetch(
+      `http://localhost:5050/api/users/${user._id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          avatar,
+        }),
+      }
+    );
 
     const data = await response.json();
 
     if (data.token) {
-      localStorage.setItem("user", JSON.stringify(data));
-      setUser(data);
+      setUser({ ...user, ...data });
       navigate("/");
-    } else {
-      alert("Please check your username and password");
     }
   };
 
@@ -97,7 +84,7 @@ function Register() {
 
   return (
     <>
-      <h1>Register</h1>
+      <h1>Edit Profile</h1>
       <div className="form-container">
         <form onSubmit={submitHandler} className="form">
           <label>Name</label>
@@ -112,26 +99,13 @@ function Register() {
             type="email"
             onChange={(e) => setEmail(e.target.value)}
           />
-          <label>Password</label>
-          <input
-            value={password}
-            type="password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <label>Confirm Password</label>
-          <input
-            value={confirmPassword}
-            type="password"
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
           <label>Upload a profile picture</label>
           <input type="file" onChange={onFileChange} />
           <div className="form__footer">
             <button type="submit" className="btn">
-              Register
+              Update
             </button>
-            <span>Already have an account?</span>
-            <Link to="/login">Log in here</Link>
+            <Link to="/">Cancel</Link>
           </div>
         </form>
       </div>
@@ -139,4 +113,4 @@ function Register() {
   );
 }
 
-export default Register;
+export default EditProfile;

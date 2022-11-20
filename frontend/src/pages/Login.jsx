@@ -32,10 +32,24 @@ function Login() {
     const data = await response.json();
 
     if (data.token) {
+      // const userSession = await fetch(
+      //   "http://dev-test.drawandcode.com/api/get-session-id",
+      //   {
+      //     method: "GET",
+      //     mode: "no-cors",
+      //     credentials: "include",
+      //     // referrerPolicy: "no-referrer",
+      //     headers: { "Content-Type": "application/json" },
+      //   }
+      // );
+
+      // userSession = await userSession.json();
+      // console.log(userSession);
+      //data.sessionId = userSession.sessionId;
+      data.sessionId = "123456789";
       localStorage.setItem("user", JSON.stringify(data));
-      // Send back to the dashboard
       setUser(data);
-      navigate("/");
+      // navigate("/");
     } else {
       alert("Please check your username and password");
     }

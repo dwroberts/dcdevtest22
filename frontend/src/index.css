@@ -51,27 +51,39 @@ h1 {
 
 .container {
   display: block;
-  width: 100%;
   padding: 1.5rem;
   max-width: 600px;
   margin: 0 auto;
 }
 
 h1 {
-  font-size: 3rem;
+  font-size: 2.5rem;
   line-height: 1.1;
   text-align: center;
 }
 
-
-
-.form-container {
+.form-container, .profile-container {
   padding: 2rem;
   background: #fff;
   border-radius: 0.5rem;
   display: block;
   margin: 2rem auto;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+}
+
+.profile-container {
+  padding: 1rem 2rem 4rem;
+}
+
+.avatar {
+  display: block;
+  max-width: 200px;
+  border-radius: 50%;
+  margin: 3rem auto 2rem;
+}
+
+.sessionid {
+  text-align: center;
 }
 
 .form {
@@ -146,4 +158,16 @@ input[type="file"] {
   line-height: 1.5;
   padding: 15px 20px 14px;
   margin-bottom: 1rem;
+}
+
+.user-menu {
+  list-style-type: none;
+  padding: 0 0 1rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 1rem
 }

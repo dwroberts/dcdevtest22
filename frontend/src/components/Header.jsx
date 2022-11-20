@@ -5,10 +5,7 @@ import { UserContext } from "../App";
 
 function Header() {
   const navigate = useNavigate();
-
   const [user, setUser] = useContext(UserContext);
-
-  console.log(user);
 
   const logoutUser = () => {
     // localStorage.removeItem("user");
@@ -18,17 +15,14 @@ function Header() {
 
   return (
     <header className="header">
-      <div className="logo">
-        <Link to="/">D&C Dev Test</Link>
-      </div>
-      <ul>
+      <ul className="user-menu">
         {user.token && (
           <>
-            <li>{user.name}</li>
             <li>
-              <button className="btn" onClick={logoutUser}>
-                Logout
-              </button>
+              <Link to="/edit-profile">Edit Profile</Link>
+            </li>
+            <li>
+              <Link onClick={logoutUser}>Logout</Link>
             </li>
           </>
         )}

@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
-// create user context
-// const UserContext = createContext();
 export const UserContext = React.createContext();
-// export const UserContext = React.createContext();
-import Header from "./components/Header";
 import Dashboard from "./pages/Dashboard";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+import EditProfile from "./pages/EditProfile";
 
 function App() {
   const userState = useState(() => {
@@ -26,11 +22,11 @@ function App() {
       <UserContext.Provider value={userState}>
         <Router>
           <div className="container">
-            <Header />
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/register" element={<Register />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/edit-profile" element={<EditProfile />} />
             </Routes>
           </div>
         </Router>
