@@ -27,7 +27,7 @@ function EditProfile() {
 
   const updateUser = async (e) => {
     const response = await fetch(
-      `http://localhost:5050/api/users/${user._id}`,
+      `https://dcdevtest22.herokuapp.com//api/users/${user._id}`,
       {
         method: "PUT",
         headers: {

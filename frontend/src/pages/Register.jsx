@@ -61,18 +61,21 @@ function Register() {
       return;
     }
 
-    const response = await fetch("http://localhost:5050/api/users", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name,
-        email,
-        password,
-        avatar,
-      }),
-    });
+    const response = await fetch(
+      "https://dcdevtest22.herokuapp.com/api/users",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+          avatar,
+        }),
+      }
+    );
 
     const data = await response.json();
 

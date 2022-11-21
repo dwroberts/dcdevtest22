@@ -25,32 +25,35 @@ function Login() {
       setErrorMessage("Form must be filled in");
     }
 
-    const response = await fetch("http://localhost:5050/api/users/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        password,
-      }),
-    });
+    const response = await fetch(
+      "https://dcdevtest22.herokuapp.com/api/users/login",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      }
+    );
 
     const data = await response.json();
 
     if (data.token) {
       // Cors issue on localhost
-      // const userSession = await fetch(
-      //   "http://dev-test.drawandcode.com/api/get-session-id",
-      //   {
-      //     method: "GET",
-      //     headers: { "Content-Type": "application/json" },
-      //   }
-      // );
-      // userSession = await userSession.json();
-      // data.sessionId = userSession.sessionId;
+      const userSession = await fetch(
+        "http://dev-test.drawandcode.com/api/get-session-id",
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      userSession = await userSession.json();
+      data.sessionId = userSession.sessionId;
 
-      data.sessionId = "123456789";
+      // data.sessionId = "123456789";
       localStorage.setItem("user", JSON.stringify(data));
       setUser(data);
     } else {
