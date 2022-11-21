@@ -43,17 +43,17 @@ function Login() {
 
     if (data.token) {
       // Cors issue on localhost
-      const userSession = await fetch(
-        "http://dev-test.drawandcode.com/api/get-session-id",
-        {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-      userSession = await userSession.json();
-      data.sessionId = userSession.sessionId;
+      // const userSession = await fetch(
+      //   "http://dev-test.drawandcode.com/api/get-session-id",
+      //   {
+      //     method: "GET",
+      //     headers: { "Content-Type": "application/json" },
+      //   }
+      // );
+      // userSession = await userSession.json();
+      // data.sessionId = userSession.sessionId;
 
-      // data.sessionId = "123456789";
+      data.sessionId = "123456789";
       localStorage.setItem("user", JSON.stringify(data));
       setUser(data);
     } else {
