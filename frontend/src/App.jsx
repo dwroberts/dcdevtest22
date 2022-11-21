@@ -14,7 +14,6 @@ function App() {
 
   useEffect(() => {
     localStorage.setItem("user", JSON.stringify(userState[0]));
-    console.log("Called", userState);
   }, userState);
 
   return (

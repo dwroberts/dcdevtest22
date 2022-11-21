@@ -8,6 +8,8 @@ function EditProfile() {
   const [email, setEmail] = useState(user.email);
   const [file, setFile] = useState("");
   const [avatar, setAvatar] = useState(user.avatar);
+  const [hasErrors, setHasErrors] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -15,6 +17,18 @@ function EditProfile() {
       updateUser();
     }
   }, [avatar]);
+
+  useEffect(() => {
+    setHasErrors(false);
+    // Check if the file is a jpg or png
+    if (file) {
+      const filetype = file.type;
+      if (filetype !== "image/jpeg" && filetype !== "image/png") {
+        setHasErrors(true);
+        setErrorMessage("Invalid image type");
+      }
+    }
+  }, [file]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -26,6 +40,12 @@ function EditProfile() {
   };
 
   const updateUser = async (e) => {
+    if (name == "" || email == "") {
+      setHasErrors(true);
+      setErrorMessage("Please fill in required fields");
+      return;
+    }
+
     const response = await fetch(
       `https://dcdevtest22.herokuapp.com//api/users/${user._id}`,
       {
@@ -52,13 +72,6 @@ function EditProfile() {
 
   const onFileChange = (e) => {
     setFile(e.target.files[0]);
-    // Check if the file is a jpg or png
-    const filetype = e.target.files[0].type;
-    if (filetype == "image/jpeg" || filetype == "image/png") {
-      console.log("Valid image type", filetype);
-    } else {
-      console.log("Invalid image type", filetype);
-    }
   };
 
   const createAvatar = async () => {
@@ -86,6 +99,7 @@ function EditProfile() {
     <>
       <h1>Edit Profile</h1>
       <div className="form-container">
+        {hasErrors && <div className="error-text">{errorMessage}</div>}
         <form onSubmit={submitHandler} className="form">
           <label>Name</label>
           <input

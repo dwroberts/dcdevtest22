@@ -171,3 +171,8 @@ input[type="file"] {
   border-bottom: 1px solid #eee;
   margin-bottom: 1rem
 }
+
+.error-text {
+  padding: 1rem 0;
+  color: red;
+}
