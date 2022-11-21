@@ -43,6 +43,11 @@ function Login() {
     const data = await response.json();
 
     if (data.token) {
+      /* Get the user session id and assign it to the user state
+       *  There's a CORS issue fetching direct so
+       *  it's run through a proxy.
+       *  This could be moved to the server side
+       */
       const userSession = await fetch(
         // "http://dev-test.drawandcode.com/api/get-session-id", CORS issues
         `https://api.allorigins.win/get?url=${encodeURIComponent(

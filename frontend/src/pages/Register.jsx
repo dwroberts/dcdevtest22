@@ -27,6 +27,7 @@ function Register() {
     }
   }, [avatar]);
 
+  // Perform some basic validation
   useEffect(() => {
     setHasErrors(false);
     // Check if passwords match
@@ -80,7 +81,26 @@ function Register() {
     const data = await response.json();
 
     if (data.token) {
-      data.sessionId = "123456789";
+      /* Get the user session id and assign it to the user state
+       *  There's a CORS issue fetching direct so
+       *  it's run through a proxy.
+       *  This could be moved to the server side
+       */
+      const userSession = await fetch(
+        // "http://dev-test.drawandcode.com/api/get-session-id", CORS issues
+        `https://api.allorigins.win/get?url=${encodeURIComponent(
+          "http://dev-test.drawandcode.com/api/get-session-id"
+        )}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const userSessionData = await userSession.json();
+
+      data.sessionId = JSON.parse(userSessionData.contents).sessionId;
       localStorage.setItem("user", JSON.stringify(data));
       setUser(data);
       navigate("/");
@@ -94,6 +114,7 @@ function Register() {
     setFile(e.target.files[0]);
   };
 
+  // 3rd Part API to generate an avatar from photo
   const createAvatar = async () => {
     const formData = new FormData();
     formData.append("photo", file);
