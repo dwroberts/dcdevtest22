@@ -5,10 +5,12 @@ import { UserContext } from "../App";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [hasErrors, setHasErrors] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
   const [user, setUser] = useContext(UserContext);
 
-  // redirect to front page if already logged in
+  // redirect to dash if already logged in
   useEffect(() => {
     if (user.token) {
       navigate("/");
@@ -17,6 +19,11 @@ function Login() {
 
   const loginUser = async (e) => {
     e.preventDefault();
+
+    if (email === "" || password === "") {
+      setHasErrors(true);
+      setErrorMessage("Form must be filled in");
+    }
 
     const response = await fetch("http://localhost:5050/api/users/login", {
       method: "POST",
@@ -32,26 +39,23 @@ function Login() {
     const data = await response.json();
 
     if (data.token) {
+      // Cors issue on localhost
       // const userSession = await fetch(
       //   "http://dev-test.drawandcode.com/api/get-session-id",
       //   {
       //     method: "GET",
-      //     mode: "no-cors",
-      //     credentials: "include",
-      //     // referrerPolicy: "no-referrer",
       //     headers: { "Content-Type": "application/json" },
       //   }
       // );
-
       // userSession = await userSession.json();
-      // console.log(userSession);
-      //data.sessionId = userSession.sessionId;
+      // data.sessionId = userSession.sessionId;
+
       data.sessionId = "123456789";
       localStorage.setItem("user", JSON.stringify(data));
       setUser(data);
-      // navigate("/");
     } else {
-      alert("Please check your username and password");
+      setHasErrors(true);
+      setErrorMessage("Invalid login details");
     }
   };
 
@@ -59,6 +63,7 @@ function Login() {
     <>
       <h1>Login</h1>
       <div className="form-container">
+        {hasErrors && <div className="error-text">{errorMessage}</div>}
         <form onSubmit={loginUser} className="form">
           <label>Email</label>
           <input

@@ -9,9 +9,12 @@ function Register() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [file, setFile] = useState("");
   const [avatar, setAvatar] = useState("");
+  const [hasErrors, setHasErrors] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
   const [user, setUser] = useContext(UserContext);
 
+  // Already registered so back to dash
   useEffect(() => {
     if (user.token) {
       navigate("/");
@@ -19,11 +22,31 @@ function Register() {
   }, [user]);
 
   useEffect(() => {
-    registerUser();
+    if (file) {
+      registerUser();
+    }
   }, [avatar]);
+
+  useEffect(() => {
+    setHasErrors(false);
+    // Check if passwords match
+    if (password !== confirmPassword) {
+      setHasErrors(true);
+      setErrorMessage("Passwords do not match.");
+    }
+    // Check if the file is a jpg or png
+    if (file) {
+      const filetype = file.type;
+      if (filetype !== "image/jpeg" && filetype !== "image/png") {
+        setHasErrors(true);
+        setErrorMessage("Invalid image type");
+      }
+    }
+  }, [name, email, password, confirmPassword, file]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
+
     if (file) {
       await createAvatar();
     } else {
@@ -32,12 +55,11 @@ function Register() {
   };
 
   const registerUser = async () => {
-    console.log({
-      name,
-      email,
-      password,
-      avatar,
-    });
+    if (name == "" || email == "" || password == "") {
+      setHasErrors(true);
+      setErrorMessage("Please fill in required fields");
+      return;
+    }
 
     const response = await fetch("http://localhost:5050/api/users", {
       method: "POST",
@@ -55,23 +77,18 @@ function Register() {
     const data = await response.json();
 
     if (data.token) {
+      data.sessionId = "123456789";
       localStorage.setItem("user", JSON.stringify(data));
       setUser(data);
       navigate("/");
     } else {
-      alert("Please check your username and password");
+      setHasErrors(true);
+      setErrorMessage("Your profile could not be created.");
     }
   };
 
   const onFileChange = (e) => {
     setFile(e.target.files[0]);
-    // Check if the file is a jpg or png
-    const filetype = e.target.files[0].type;
-    if (filetype == "image/jpeg" || filetype == "image/png") {
-      console.log("Valid image type", filetype);
-    } else {
-      console.log("Invalid image type", filetype);
-    }
   };
 
   const createAvatar = async () => {
@@ -99,6 +116,7 @@ function Register() {
     <>
       <h1>Register</h1>
       <div className="form-container">
+        {hasErrors && <div className="error-text">{errorMessage}</div>}
         <form onSubmit={submitHandler} className="form">
           <label>Name</label>
           <input

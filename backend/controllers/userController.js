@@ -57,8 +57,10 @@ const createUser = async (req, res) => {
       token: generateToken(user._id),
     });
   } else {
-    res.status(400);
-    throw new Error("Invalid user data");
+    res.status(400).json({
+      ok: false,
+      message: "Invalid user data",
+    });
   }
 };
 
@@ -78,8 +80,11 @@ const loginUser = async (req, res) => {
       token: generateToken(user._id),
     });
   } else {
-    res.status(400);
-    throw new Error("The user could not be logged in");
+    res.status(400).json({
+      ok: false,
+      message: "The user could not be logged in",
+    });
+    // throw new Error("The user could not be logged in");
   }
 };
 
@@ -122,7 +127,7 @@ const deleteUser = async (req, res) => {
 // Generate JSON Web Token
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: "30d",
+    expiresIn: "1d",
   });
 };
 
